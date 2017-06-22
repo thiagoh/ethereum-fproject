@@ -1,11 +1,28 @@
 function checkAllBalances() {
-  var totalBal = 0;
+  var totalBal = 0,
+    accounts = [];
+
   for (var acctNum in eth.accounts) {
-    var acct = eth.accounts[acctNum];
-    var acctBal = web3.fromWei(eth.getBalance(acct), "ether");
+    var acct = eth.accounts[acctNum],
+      acctBal = web3.fromWei(eth.getBalance(acct), "ether");
+
     totalBal += parseFloat(acctBal);
-    console.log("  eth.accounts[" + acctNum + "]: \t" + acct + " \tbalance: " + acctBal + " ether");
+
+    accounts.push({
+      id: acct,
+      balance: acctBal
+    });
   }
+
+  accounts.sort(function(account1, account2) {
+    return account1.balance - account2.balance;
+  });
+
+  for (var key in accounts) {
+    var account = accounts[key];
+    console.log("  eth.accounts[" + key + "]: \t" + account.id + " \tbalance: " + account.balance + " ether");
+  }
+
   console.log("  Total balance: " + totalBal + " ether");
 }
 
