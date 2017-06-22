@@ -39,7 +39,7 @@ function randomizeEtherbase(count) {
   var doRandomizeEtherbase = function() {
     var account = eth.accounts[Math.round(Math.random() * eth.accounts.length)];
     miner.setEtherbase(account);
-    console.log('New etherbase: ' + account);
+    console.log('Randomized! New etherbase: ' + account);
   };
 
   if (typeof count === 'undefined') {
@@ -52,6 +52,7 @@ function randomizeEtherbase(count) {
     }
 
     doRandomizeEtherbase();
+    console.log('Missing ' + (count - 1));
 
     setTimeout(function() {
       randomizeEtherbase(count - 1);
