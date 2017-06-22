@@ -19,19 +19,26 @@ function createAccounts(numOfAccounts) {
 
 function randomizeEtherbase(count) {
 
-  count = typeof count === 'undefined' ? 1 : count;
-
-  if (count <= 0) {
-    return;
-  }
-
-  var _randomizeEtherbase = function() {
+  var doRandomizeEtherbase = function() {
     var account = eth.accounts[Math.round(Math.random() * eth.accounts.length)];
     miner.setEtherbase(account);
     console.log('New etherbase: ' + account);
   };
 
-  setTimeout(function() {
-    randomizeEtherbase(count - 1);
-  }, 5000);
+  if (typeof count === 'undefined') {
+    doRandomizeEtherbase();
+
+  } else {
+
+    if (count <= 0) {
+      return;
+    }
+
+    doRandomizeEtherbase();
+
+    setTimeout(function() {
+      randomizeEtherbase(count - 1);
+    }, 5000);
+  }
+
 }
