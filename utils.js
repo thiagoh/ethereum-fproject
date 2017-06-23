@@ -28,7 +28,7 @@ function checkAllBalances() {
 
 function createAccounts(numOfAccounts) {
   for (var i = 0; i < numOfAccounts; i++) {
-    personal.newAccount("test_" + i);
+    personal.newAccount("thisismystupidpassword!!");
   }
 
   console.log(eth.accounts);
