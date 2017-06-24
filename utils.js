@@ -26,6 +26,20 @@ function checkAllBalances() {
   console.log("  Total balance: " + totalBal + " ether");
 }
 
+function startCheckingAllBalances() {
+
+  var interval = setInterval(checkAllBalances, 3000);
+
+  return interval;
+}
+
+function unlockAccount(account) {
+
+  account = typeof account === 'undefined' ? '0x39ac693fa97b784d2f04b8fa6d42c7d4122a893d' : account;
+
+  personal.unlockAccount(account, 'thisismystupidpassword!!', 3000);
+}
+
 function createAccounts(numOfAccounts) {
   for (var i = 0; i < numOfAccounts; i++) {
     personal.newAccount("thisismystupidpassword!!");
