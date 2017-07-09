@@ -72,5 +72,21 @@ function randomizeEtherbase(count) {
       randomizeEtherbase(count - 1);
     }, 5000);
   }
+}
 
+function sendTransaction(from, to, howMuch) {
+
+  unlockAccount(from);
+  unlockAccount(to);
+
+  eth.sendTransaction({
+    from: from,
+    to: to,
+    value: web3.toWei(howMuch, "ether")
+  });
+  // eth.sendTransaction({
+  //   from: '0xcc02a9d7f853d934e829ff9868a5ed35e0467868',
+  //   to: '0xaad29cf34adbfdbb850c59f124abef800b1d2483',
+  //   value: web3.toWei(1, "ether")
+  // });
 }

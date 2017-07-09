@@ -8,7 +8,14 @@ contract mortal {
     function mortal() { owner = msg.sender; }
 
     /* Function to recover the funds on the contract */
-    function kill() { if (msg.sender == owner) selfdestruct(owner); }
+    function kill() { 
+      if (msg.sender == owner)
+        selfdestruct(owner); 
+    }
+
+    function sender() constant returns (address) {
+        return msg.sender;
+    }
 }
 
 contract greeter is mortal {
