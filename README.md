@@ -5,11 +5,15 @@
 geth init genesis.json
 ```
 
-
 ##### Run the network without mining
 
 ```
 geth --rpc --fast --cache 512 --ipcpath ~/Library/Ethereum/geth.ipc --networkid 15
+```
+
+##### Run Mist
+```
+mist --rpc --ipcpath ~/Library/Ethereum/geth.ipc --networkid 15
 ```
 
 ##### Run the network with mining 

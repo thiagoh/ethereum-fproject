@@ -19,16 +19,28 @@ contract mortal {
 }
 
 contract greeter is mortal {
-    /* define variable greeting of the type string */
-    string greeting;
+  /* define variable greeting of the type string */
+  string greeting;
+  mapping (address => uint) balances;
 
-    /* this runs when the contract is executed */
-    function greeter(string _greeting) public {
-        greeting = _greeting;
-    }
+  /* this runs when the contract is executed */
+  function greeter(string _greeting) public {
+      greeting = _greeting;
+  }
 
-    /* main function */
-    function greet() constant returns (string) {
-        return greeting;
-    }
+  /* main function */
+  function greet() constant returns (string) {
+      return greeting;
+  }
+
+  function metaCoin() {
+    balances[msg.sender] = 10000;
+  }
+  
+  function sendCoin(address receiver, uint amount) returns(bool sufficient) {
+    if (balances[msg.sender] < amount) return false;
+    balances[msg.sender] -= amount;
+    balances[receiver] += amount;
+    return true;
+  }
 }
