@@ -1,3 +1,9 @@
+//
+//
+// Lee Wallet: 0x24D8b90753dF9d28b35527Cf7aDD7Dd80eAe11f9
+//
+//
+
 function checkAllBalances() {
   var totalBal = 0,
     accounts = [];
