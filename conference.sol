@@ -65,9 +65,9 @@ contract Conference {
     // if we use 'require' here the events are not captured because it reverts all state
     // require(msg.sender == organizer);
 
-    Info('sender is the same as the organizer', None, None, None);
-
     address myAddress = this;
+    Info('Sender is the same as the organizer', myAddress, organizer, myAddress.balance);
+
     organizer.transfer(myAddress.balance);
 
     return 0;
