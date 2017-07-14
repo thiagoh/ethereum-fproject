@@ -55,8 +55,10 @@ contract Conference {
   }
   function sendFunds() payable returns (int result_code) {
 
+    address myAddress = this;
+
     if (msg.sender != organizer) { 
-      Error('Sender is NOT the same as the organizer', msg.sender, organizer, myAddress.balance);
+      Error('ERROR!!! Sender is NOT the same as the organizer', msg.sender, organizer, myAddress.balance);
       // if we use 'throw' here the events are not captured because it reverts all state
       // throw 
       return -1;
@@ -65,7 +67,6 @@ contract Conference {
     // if we use 'require' here the events are not captured because it reverts all state
     // require(msg.sender == organizer);
 
-    address myAddress = this;
     Info('Sender is the same as the organizer', myAddress, organizer, myAddress.balance);
 
     organizer.transfer(myAddress.balance);
