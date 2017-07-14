@@ -56,7 +56,7 @@ contract Conference {
   function sendFunds() payable returns (int result_code) {
 
     if (msg.sender != organizer) { 
-      Error('sender is NOT the same as the organizer', None, None, None);
+      Error('Sender is NOT the same as the organizer', msg.sender, organizer, myAddress.balance);
       // if we use 'throw' here the events are not captured because it reverts all state
       // throw 
       return -1;
