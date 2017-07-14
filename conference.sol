@@ -6,11 +6,12 @@ contract Conference {
   uint public totalAmount;
   uint public numRegistrants;
   uint public quota;
+  uint80 constant None = uint80(0); 
 
   event Deposit(address _from, uint _amount);  // so you can log these events
   event Refund(address _to, uint _amount); 
-  event Error(string message); 
-  event Info(string message); 
+  event Error(string message, address _from, address _to, uint _amount); 
+  event Info(string message, address _from, address _to, uint _amount); 
 
   function Conference() payable { // Constructor
     organizer = msg.sender;		
@@ -53,11 +54,14 @@ contract Conference {
     return myAddress.balance;
   }
   function sendFunds() payable {
-    if (msg.sender != organizer) { 
-      Error('sender is NOT the same as the organizer');
-      return; }
+    require(msg.sender == organizer);
 
-    Info('sender is the same as the organizer');
+    if (msg.sender != organizer) { 
+      Error('sender is NOT the same as the organizer', None, None, None);
+      return;
+    }
+
+    Info('sender is the same as the organizer', None, None, None);
 
     address myAddress = this;
     organizer.transfer(myAddress.balance);
