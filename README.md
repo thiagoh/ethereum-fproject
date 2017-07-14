@@ -29,5 +29,5 @@ geth --ipcpath ~/Library/Ethereum/geth.ipc --networkid 15 attach
 ```
 ##### Compile the contract
 ```
-solc --bin --abi -o bin --overwrite greeter.sol
+solc --gas --bin --abi -o bin --overwrite greeter.sol
 ```

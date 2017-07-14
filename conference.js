@@ -3,11 +3,11 @@ var minimist = require('minimist');
 var web3 = require('./config');
 
 var _greeting = "Hello World";
-var abi = [{ "constant": false, "inputs": [], "name": "kill", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "metaCoin", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "sender", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "receiver", "type": "address" }, { "name": "amount", "type": "uint256" }], "name": "sendCoin", "outputs": [{ "name": "sufficient", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "greet", "outputs": [{ "name": "", "type": "string" }], "payable": false, "type": "function" }, { "inputs": [{ "name": "_greeting", "type": "string" }], "payable": false, "type": "constructor" }];
+var abi = [{ "constant": true, "inputs": [], "name": "totalAmount", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "organizer", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "recipient", "type": "address" }, { "name": "amount", "type": "uint256" }], "name": "refundTicket", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "destroy", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newquota", "type": "uint256" }], "name": "changeQuota", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "quota", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "numRegistrants", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "buyTicket", "outputs": [{ "name": "success", "type": "bool" }], "payable": true, "type": "function" }, { "inputs": [], "payable": false, "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "_from", "type": "address" }, { "indexed": false, "name": "_amount", "type": "uint256" }], "name": "Deposit", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "_to", "type": "address" }, { "indexed": false, "name": "_amount", "type": "uint256" }], "name": "Refund", "type": "event" }];
 var contract = web3.eth.contract(abi);
 
 var mainAccount = web3.eth.accounts[0];
-var greeter;
+console.log('Deployer account: ' + mainAccount);
 var argv = minimist(process.argv.slice(2));
 // console.log(argv);
 
@@ -15,10 +15,10 @@ new Promise(function(resolve, reject) {
 
     if (argv.submit === true || argv.submit === 'true') {
 
-      greeter = contract.new(_greeting, {
+      contract.new({
           from: mainAccount,
-          data: '0x6060604052341561000c57fe5b604051610782380380610782833981016040528080518201919050505b5b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b806001908051906020019061008292919061008a565b505b5061012f565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106100cb57805160ff19168380011785556100f9565b828001600101855582156100f9579182015b828111156100f85782518255916020019190600101906100dd565b5b509050610106919061010a565b5090565b61012c91905b80821115610128576000816000905550600101610110565b5090565b90565b6106448061013e6000396000f30060606040526000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806341c0e1b5146100675780634e3b52fe1461007957806367e404ce1461008b57806390b98a11146100dd578063cfae321714610134575bfe5b341561006f57fe5b6100776101cd565b005b341561008157fe5b610089610261565b005b341561009357fe5b61009b6102aa565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34156100e557fe5b61011a600480803573ffffffffffffffffffffffffffffffffffffffff169060200190919080359060200190919050506102b3565b604051808215151515815260200191505060405180910390f35b341561013c57fe5b6101446103aa565b6040518080602001828103825283818151815260200191508051906020019080838360008314610193575b8051825260208311156101935760208201915060208101905060208303925061016f565b505050905090810190601f1680156101bf5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141561025e57600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16ff5b5b565b612710600260003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020819055505b565b60003390505b90565b600081600260003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002054101561030557600090506103a4565b81600260003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000828254039250508190555081600260008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540192505081905550600190505b92915050565b6103b26105f0565b6103ba6105f0565b6103c2610604565b60006103cc610604565b60006000604060405190810160405280601481526020017f2066726f6d2074686961676f20616e64206c6565000000000000000000000000815250955085945060019350845184805460018160011615610100020316600290049050016040518059106104365750595b908082528060200260200182016040525b5092506000915060009050600090505b8380546001816001161561010002031660029004905081101561052a578381815460018160011615610100020316600290048110151561049357fe5b8154600116156104b25790600052602060002090602091828204019190065b9054901a7f01000000000000000000000000000000000000000000000000000000000000000283838060010194508151811015156104ec57fe5b9060200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916908160001a9053505b8080600101915050610457565b600090505b84518110156105e357848181518110151561054657fe5b9060200101517f010000000000000000000000000000000000000000000000000000000000000090047f01000000000000000000000000000000000000000000000000000000000000000283838060010194508151811015156105a557fe5b9060200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916908160001a9053505b808060010191505061052f565b8296505b50505050505090565b602060405190810160405280600081525090565b6020604051908101604052806000815250905600a165627a7a7230582037de8beec5a0976141f74544f71f917f12f16a045ab0323d974486a714ea85a50029',
-          gas: '987654'
+          data: '0x' + '6060604052341561000c57fe5b5b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506101f4600481905550600060038190555060006002819055505b5b61060e806100786000396000f3006060604052361561008c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680631a39d8ef1461008e57806361203265146100b4578063705099b91461010657806383197ef014610145578063a977c71e14610157578063cebe09c914610177578063ec3a6f731461019d578063edca914c146101c3575bfe5b341561009657fe5b61009e6101e5565b6040518082815260200191505060405180910390f35b34156100bc57fe5b6100c46101eb565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561010e57fe5b610143600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091908035906020019091905050610211565b005b341561014d57fe5b6101556103ef565b005b341561015f57fe5b6101756004808035906020019091905050610483565b005b341561017f57fe5b6101876104ea565b6040518082815260200191505060405180910390f35b34156101a557fe5b6101ad6104f0565b6040518082815260200191505060405180910390f35b6101cb6104f6565b604051808215151515815260200191505060405180910390f35b60025481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561026f576103ea565b81600160008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205414156103e957309050818173ffffffffffffffffffffffffffffffffffffffff16311015156103e8578273ffffffffffffffffffffffffffffffffffffffff166108fc839081150290604051809050600060405180830381858888f19350505050151561031957fe5b6000600160008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020819055508160025403600281905550600360008154809291906001900391905055507fbb28353e4598c3b9199101a66e0989549b659a59a54d2c27fbb183f1932c8e6d8383604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a15b5b5b505050565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141561048057600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16ff5b5b565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156104df576104e7565b806004819055505b50565b60045481565b60035481565b600060045460035410151561050e57600090506105df565b34600160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000208190555034600254016002819055506003600081548092919060010191905055507fe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c3334604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1600190505b905600a165627a7a7230582080aff7acf13f5bf8ea24a24ed4c1ef4eed47c11abaaf8003b4f389bc5b8e389e0029',
+          gas: '360655'
         },
         function(e, contract) {
           console.log(e);
@@ -28,66 +28,107 @@ new Promise(function(resolve, reject) {
 
             if (typeof contract.address !== 'undefined') {
               console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
-              //Contract mined! address: 0x2540e1a638bb0b562c9a173c7b8b9ddbfdb85b58 transactionHash: 0x25a56062fb2cbb86b4c7cb5a262937ac47d63eeb6d41bc928a79d009a85f606d
-              //Contract mined! address: 0x67e8d29c9663bb32a1d1e66e673ee00c51017221 transactionHash: 0x11a7bb7bf3e93d6f4ded42595d2f070f4b07102720572944bf65717ec8125db1
-              resolve();
+              // Contract mined! address: 0xa70d4d8cd684652334293b984931cf7b64812242
+              resolve(contract.address);
             }
           }
         });
     } else {
 
-      greeter = web3.eth.contract(abi).at('0x2540e1a638bb0b562c9a173c7b8b9ddbfdb85b58');
-      resolve();
+      resolve('0xa70d4d8cd684652334293b984931cf7b64812242');
     }
   })
-  .then(function() {
-    console.log('greeter.address', web3.eth.getCode(greeter.address));
-    console.log(greeter.greet());
-    // console.log(greeter.sender());
-    // console.log(greeter.kill.sendTransaction({ from: mainAccount }));
+  .then(function(address) {
+
+    var conference = web3.eth.contract(abi).at(address);
+
+    var event = conference.allEvents(); // or use conference.Deposit() or .Refund()
+    event.watch(function(error, result) {
+      if (error) {
+        console.log("Error: " + error);
+      } else {
+        console.log("Event: " + result.event, result);
+
+        if (result.event === 'Deposit') {
+          console.log(result.args);
+          console.log(result.args._amount);
+          console.log('conference.quota()', conference.quota());
+          console.log('conference.numRegistrants()', conference.numRegistrants());
+          console.log('conference.totalAmount()', conference.totalAmount());
+        }
+
+        // {
+        //   address: '0x5ce5b8d12ce0aa831a7d9c14659a5266bb6e04cd',
+        //   blockNumber: 7258,
+        //   transactionHash: '0xa4d7ed72bb75750557dee50c8f072ea1b09d2ac317a2bdffa45b3285a0e98ee9',
+        //   transactionIndex: 0,
+        //   blockHash: '0xa80c1be5c5ea2dfe295f86036b821f1ab2488f114f76bf66f72ebef0ffab7a68',
+        //   logIndex: 0,
+        //   removed: false,
+        //   event: 'Deposit',
+        //   args: {
+        //     _from: '0x1f08f398166140646d062d368b9177d9dd3f03a2',
+        //     _amount: {
+        //       [String: '23000000000000000000'] s: 1,
+        //       e: 19,
+        //       c: [Object]
+        //     }
+        //   }
+        // }
+      }
+    });
+
+    console.log('conference.address', conference.address);
+    console.log('conference.code', web3.eth.getCode(conference.address).substring(0, 80) + '...');
 
     var stdin = process.openStdin();
-    var state = { killActivated: false };
-    var getkill = function(state) {
-
-      if (state.killActivated === true) {
-        return function() {
-          console.log(greeter.kill.sendTransaction({ from: mainAccount }));
-          return true;
-        };
-      } else if (state.killActivated === false) {
-        return function() {
-          console.log('Are you sure you wanna kill this contract?');
-          return false;
-        };
-      }
-    };
 
     stdin.on("data", function(d) {
 
-      // note:  d is an object, and when converted to a string it will
-      // end with a linefeed.  so we (rather crudely) account for that  
-      // with toString() and then trim() 
       var line = d.toString().trim();
-      // console.log("you entered: [" + line + "]");
 
-      var greeterArgv = minimist(line.split(' '));
-      console.log(greeterArgv);
+      var conferenceArgv = minimist(line.split(' '));
+      console.log(conferenceArgv);
 
-      if (greeterArgv.kill === true) {
-        state.killActivated = !getkill(state)();
-      } else if (greeterArgv.greet === true) {
-        console.log(greeter.greet());
-      } else if (greeterArgv.metaCoin === true) {
-        console.log(greeter.greet());
-      } else if (greeterArgv._[0] === '') {
+      if (conferenceArgv.eval === true) {
+
+        try {
+
+          eval(conferenceArgv.cmd);
+
+        } catch (error) {
+          console.error(error);
+        }
+
+      } else if (typeof conferenceArgv.buy === 'string' || conferenceArgv.buy === true) {
+
+        var account = '';
+        var ticketPrice = web3.toWei(23, 'ether');
+
+        if (typeof conferenceArgv.buy === 'string' && typeof conferenceArgv.account === 'undefined') {
+          account = conferenceArgv.buy.replace(/'/g, '');
+        } else if (typeof conferenceArgv.account === 'undefined') {
+          console.error('Account not defined. Please use --account to set the source account');
+          return;
+        } else if (typeof conferenceArgv.account !== 'string') {
+          console.error('Account should be a string. Please use --account \'account id\' to set the source account');
+          return;
+        }
+
+        console.log('Buying ticket from account ' + account);
+
+        try {
+
+          conference.buyTicket({ from: account, value: ticketPrice });
+
+        } catch (error) {
+          console.error(error);
+        }
+
+      } else if (conferenceArgv._[0] === '') {
         // nop
       } else {
         console.log('No action linked to this argument');
-      }
-
-      if (greeterArgv.kill !== true) {
-        state.killActivated = false;
       }
 
     });
