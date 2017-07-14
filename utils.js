@@ -43,7 +43,7 @@ function unlockAccount(account) {
 
   account = typeof account === 'undefined' ? '0x39ac693fa97b784d2f04b8fa6d42c7d4122a893d' : account;
 
-  personal.unlockAccount(account, 'thisismystupidpassword!!', 3000);
+  personal.unlockAccount(account, 'thisismystupidpassword!!', 90000);
 }
 
 function createAccounts(numOfAccounts) {

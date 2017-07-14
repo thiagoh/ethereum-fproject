@@ -9,8 +9,10 @@ contract Conference {
 
   event Deposit(address _from, uint _amount);  // so you can log these events
   event Refund(address _to, uint _amount); 
+  event Error(string message); 
+  event Info(string message); 
 
-  function Conference() { // Constructor
+  function Conference() payable { // Constructor
     organizer = msg.sender;		
     quota = 500;
     numRegistrants = 0;
@@ -28,18 +30,37 @@ contract Conference {
     if (msg.sender != organizer) { return; }
     quota = newquota;
   }
-  function refundTicket(address recipient, uint amount) public  {
+  function refundTicket(address recipient, uint amount) public {
     if (msg.sender != organizer) { return; }
     if (registrantsPaid[recipient] == amount) { 
+
       address myAddress = this;
       if (myAddress.balance >= amount) { 
-        recipient.transfer(amount);
-        registrantsPaid[recipient] = 0;
-        totalAmount = totalAmount - amount;
-        numRegistrants--;
-        Refund(recipient, amount);
+        
+        bool result = recipient.send(amount);
+        
+        if (result) {
+          registrantsPaid[recipient] = 0;
+          totalAmount = totalAmount - amount;
+          numRegistrants--;
+          Refund(recipient, amount);
+        }
       }
     }
+  }
+  function conferenceBalance() returns (uint balance) {
+    address myAddress = this;
+    return myAddress.balance;
+  }
+  function sendFunds() payable {
+    if (msg.sender != organizer) { 
+      Error('sender is NOT the same as the organizer');
+      return; }
+
+    Info('sender is the same as the organizer');
+
+    address myAddress = this;
+    organizer.transfer(myAddress.balance);
   }
   function destroy() { // so funds not locked in contract forever
     if (msg.sender == organizer) { 
