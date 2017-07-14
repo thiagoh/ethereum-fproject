@@ -53,18 +53,24 @@ contract Conference {
     address myAddress = this;
     return myAddress.balance;
   }
-  function sendFunds() payable {
-    require(msg.sender == organizer);
+  function sendFunds() payable returns (int result_code) {
 
     if (msg.sender != organizer) { 
       Error('sender is NOT the same as the organizer', None, None, None);
-      return;
+      // if we use 'throw' here the events are not captured because it reverts all state
+      // throw 
+      return -1;
     }
+
+    // if we use 'require' here the events are not captured because it reverts all state
+    // require(msg.sender == organizer);
 
     Info('sender is the same as the organizer', None, None, None);
 
     address myAddress = this;
     organizer.transfer(myAddress.balance);
+
+    return 0;
   }
   function destroy() { // so funds not locked in contract forever
     if (msg.sender == organizer) { 
